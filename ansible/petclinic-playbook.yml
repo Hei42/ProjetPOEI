@@ -1,0 +1,16 @@
+- name: déploiement de petclinic sur cluster k8s
+  hosts: k8s-master
+  become: false
+  gather_facts: false
+  tasks:
+  - name: Vérifier cluster k8s
+    command: kubectl cluster-info
+    register: k8sClusterOk
+  - name: Copier manifest yml sur master
+    copy:
+     src: /tmp/petclinic-k8s.yml
+     dest: /tmp/petclinic-k8s.yml 
+  - name: deploy petclinic
+    command: kubectl apply -f /tmp/petclinic-k8s.yml
+
+
